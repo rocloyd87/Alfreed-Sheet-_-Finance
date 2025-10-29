@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Alfred 5.0 Command Center</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background-color: #0f172a;
+        color: #e2e8f0;
+      }
+      body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 40%, #111827 100%);
+      }
+      header {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        backdrop-filter: blur(12px);
+        background: rgba(15, 23, 42, 0.6);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      main {
+        flex: 1;
+        padding: 1.5rem;
+        display: grid;
+        gap: 1.25rem;
+      }
+      .grid {
+        display: grid;
+        gap: 1.25rem;
+      }
+      .grid.three {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .panel {
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        box-shadow: 0 30px 60px rgba(15, 23, 42, 0.35);
+        transition: transform 160ms ease, border-color 160ms ease;
+      }
+      .panel:hover {
+        transform: translateY(-4px);
+        border-color: rgba(148, 163, 184, 0.35);
+      }
+      .panel h2 {
+        margin: 0 0 1rem;
+        font-size: 1rem;
+        text-transform: uppercase;
+        color: #38bdf8;
+        letter-spacing: 0.08em;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 0.5rem 0.75rem;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+      th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #94a3b8;
+      }
+      td {
+        font-size: 0.9rem;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 9999px;
+        padding: 0.35rem 0.75rem;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        background: rgba(56, 189, 248, 0.12);
+        color: #bae6fd;
+      }
+      .footer {
+        padding: 1rem 1.5rem;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(148, 163, 184, 0.8);
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+        background: rgba(15, 23, 42, 0.6);
+      }
+      button {
+        border: none;
+        border-radius: 9999px;
+        background: linear-gradient(135deg, #38bdf8, #818cf8);
+        color: #0f172a;
+        font-weight: 600;
+        padding: 0.6rem 1.25rem;
+        cursor: pointer;
+        box-shadow: 0 20px 40px rgba(56, 189, 248, 0.35);
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 24px 46px rgba(56, 189, 248, 0.45);
+      }
+      section > p {
+        margin: 0 0 0.75rem;
+        color: #cbd5f5;
+      }
+      @media (max-width: 640px) {
+        header, main, .footer {
+          padding: 1rem;
+        }
+        h1 {
+          font-size: 1.1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Alfred 5.0</h1>
+        <div class="pill">Command Center</div>
+      </div>
+      <button id="refresh">Refresh</button>
+    </header>
+    <main>
+      <section class="panel">
+        <h2>Financial Snapshot</h2>
+        <p id="snapshot-summary">Loading latest insights…</p>
+        <div class="grid three" id="snapshot-panels"></div>
+      </section>
+      <section class="grid three">
+        <div class="panel">
+          <h2>Top Categories</h2>
+          <table id="category-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Spent</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Portfolio Allocation</h2>
+          <table id="portfolio-table">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Weight</th>
+                <th>Δ</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Debt Forecast</h2>
+          <table id="debt-table">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Paid Off</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">Generated <span id="generated-at"></span></footer>
+    <script>
+      const bootstrapPayload = <?!= JSON.stringify(app.payload) ?>;
+      const generatedAt = document.getElementById('generated-at');
+      const snapshotSummary = document.getElementById('snapshot-summary');
+      const snapshotPanels = document.getElementById('snapshot-panels');
+      const categoryBody = document.querySelector('#category-table tbody');
+      const portfolioBody = document.querySelector('#portfolio-table tbody');
+      const debtBody = document.querySelector('#debt-table tbody');
+      const refreshButton = document.getElementById('refresh');
+
+      function formatCurrency(value) {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value || 0);
+      }
+
+      function renderPayload(payload) {
+        generatedAt.textContent = new Date(payload.generatedAt || Date.now()).toLocaleString();
+        snapshotSummary.textContent = payload.analytics?.summary || 'No analytics available yet.';
+
+        snapshotPanels.innerHTML = '';
+        const panels = payload.analytics?.highlights || [];
+        panels.forEach((item) => {
+          const card = document.createElement('div');
+          card.className = 'panel';
+          card.innerHTML = `<h2>${item.title || 'Metric'}</h2><p>${item.value || '—'}</p>`;
+          snapshotPanels.appendChild(card);
+        });
+
+        categoryBody.innerHTML = '';
+        (payload.analytics?.topCategories || []).forEach((row) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${row.category}</td><td>${formatCurrency(row.amount)}</td>`;
+          categoryBody.appendChild(tr);
+        });
+
+        portfolioBody.innerHTML = '';
+        (payload.portfolio?.allocations || []).forEach((row) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${row.asset}</td><td>${(row.weight * 100).toFixed(1)}%</td><td>${(row.delta * 100).toFixed(1)}%</td>`;
+          portfolioBody.appendChild(tr);
+        });
+
+        debtBody.innerHTML = '';
+        (payload.debtForecast?.accounts || []).forEach((row) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${row.account}</td><td>${row.payoffDate || '—'}</td>`;
+          debtBody.appendChild(tr);
+        });
+      }
+
+      function refresh() {
+        refreshButton.disabled = true;
+        refreshButton.textContent = 'Refreshing…';
+        google.script.run
+          .withSuccessHandler((payload) => {
+            renderPayload(payload);
+            refreshButton.disabled = false;
+            refreshButton.textContent = 'Refresh';
+          })
+          .withFailureHandler((error) => {
+            console.error(error);
+            refreshButton.disabled = false;
+            refreshButton.textContent = 'Retry';
+          })
+          .Mod_UI.getAppPayload({ periodDays: 30 });
+      }
+
+      refreshButton.addEventListener('click', refresh);
+      renderPayload(bootstrapPayload);
+    </script>
+  </body>
+</html>
