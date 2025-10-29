@@ -1,0 +1,27 @@
+name: Alfred CI
+
+on:
+  push:
+    branches: [ main, work ]
+  pull_request:
+    branches: [ main, work ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: |
+          npm ci || npm install
+      - name: Static analysis
+        run: npm run lint
+      - name: Test suite with coverage
+        run: npm test
+      - name: Security audit
+        run: npm run audit
