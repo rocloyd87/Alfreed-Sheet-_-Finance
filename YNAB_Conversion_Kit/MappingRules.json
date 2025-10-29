@@ -1,0 +1,209 @@
+{
+  "rules": [
+    {
+      "if": {
+        "category_old_contains": [
+          "Shopee",
+          "Shopee Pay Later"
+        ],
+        "payee_contains": [
+          "Shopee"
+        ]
+      },
+      "then": {
+        "group": "Shopping & Lifestyle",
+        "category": "Shopee / Lazada / Tiktok",
+        "tags": [
+          "Shopee"
+        ]
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "TikTok",
+          "TikTok Shop Paylater"
+        ],
+        "payee_contains": [
+          "TikTok"
+        ]
+      },
+      "then": {
+        "group": "Shopping & Lifestyle",
+        "category": "Shopee / Lazada / Tiktok",
+        "tags": [
+          "TikTok"
+        ]
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "Communication",
+          "Internet",
+          "Smart",
+          "Globe"
+        ],
+        "payee_contains": [
+          "Communication"
+        ]
+      },
+      "then": {
+        "group": "Housing & Utilities",
+        "category": "Internet & Mobile",
+        "tags": [
+          "Postpaid"
+        ]
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "Auto Loan"
+        ],
+        "payee_contains": [
+          "AUTO LOAN"
+        ]
+      },
+      "then": {
+        "group": "Debt & Loans",
+        "category": "Auto Loan",
+        "tags": [
+          "BPI"
+        ]
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "Union Bank Personal Loan",
+          "UB Quick Loan"
+        ],
+        "payee_contains": [
+          "Union Bank"
+        ]
+      },
+      "then": {
+        "group": "Debt & Loans",
+        "category": "UnionBank Loans",
+        "tags": [
+          "Loan"
+        ]
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "YNAB",
+          "Google",
+          "TODOIST"
+        ],
+        "payee_contains": [
+          "Google",
+          "TODOIST",
+          "YNAB"
+        ]
+      },
+      "then": {
+        "group": "Subscriptions & Software",
+        "category": "Streaming & Productivity Apps",
+        "tags": [
+          "Subscription"
+        ]
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "Health",
+          "Medical",
+          "Check Up",
+          "Diagnostics"
+        ]
+      },
+      "then": {
+        "group": "Health & Insurance",
+        "category": "Medical Checkups",
+        "tags": [
+          "Healthcare"
+        ]
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "Meds",
+          "Vitamins"
+        ]
+      },
+      "then": {
+        "group": "Health & Insurance",
+        "category": "Medications & Vitamins"
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "RCBC UNLIPAY",
+          "Buy Now"
+        ],
+        "payee_contains": [
+          "RCBC"
+        ]
+      },
+      "then": {
+        "group": "Debt & Loans",
+        "category": "Buy Now, Pay Later",
+        "tags": [
+          "RCBC"
+        ]
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "Donations",
+          "Gifts"
+        ]
+      },
+      "then": {
+        "group": "Family Support",
+        "category": "Donations & Gifts"
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "St Peter"
+        ]
+      },
+      "then": {
+        "group": "Family Support",
+        "category": "Family St. Peter Plans"
+      }
+    },
+    {
+      "if": {
+        "category_old_contains": [
+          "Transfer"
+        ],
+        "payee_contains": [
+          "Transfer"
+        ]
+      },
+      "then": {
+        "group": "Transfers",
+        "category": "Internal Transfers"
+      }
+    }
+  ],
+  "fallbacks": {
+    "transfer_detection": {
+      "category_contains": "Transfer"
+    },
+    "uncategorized": {
+      "group": "Uncategorized / Review",
+      "category": "To Triage"
+    }
+  }
+}

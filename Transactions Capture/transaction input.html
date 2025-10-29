@@ -1,0 +1,2373 @@
+<!-- File: index.html - Cascade Ledger ENHANCED with Smart OCR & Settings -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base target="_top">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-soft: #f0d58c;
+      --indigo: #6366f1;
+      --emerald: #10b981;
+      --ruby: #ef4444;
+      --ink: #0b1220;
+      --ink-2: #101828;
+      --glass: rgba(255, 255, 255, .08);
+      --stroke: rgba(255, 255, 255, .18);
+      --text-1: #f8fafc;
+      --text-2: #cbd5e1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, sans-serif;
+      background: 
+        radial-gradient(800px 400px at 10% 0%, rgba(212, 175, 55, .12), transparent 60%),
+        radial-gradient(800px 400px at 90% 10%, rgba(99, 102, 241, .12), transparent 60%),
+        linear-gradient(160deg, var(--ink) 0%, var(--ink-2) 100%);
+      min-height: 100vh;
+      color: var(--text-1);
+    }
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    }
+    .lux-title {
+      letter-spacing: .4px;
+      background: linear-gradient(90deg, var(--gold-soft), #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lux-sub { color: var(--text-2); }
+    label { color: #e2e8f0; font-weight: 500; }
+    input:not([type="radio"]):not([type="checkbox"]), select, textarea {
+      background-color: rgba(255, 255, 255, .06) !important;
+      color: var(--text-1) !important;
+      border: 1px solid rgba(255, 255, 255, .2) !important;
+      transition: all .2s ease;
+      width: 100%;
+    }
+    select { cursor: pointer; }
+    select option {
+      background-color: #1a1f2e !important;
+      color: #f8fafc !important;
+      padding: 0.5rem !important;
+    }
+    select option:hover, select option:focus, select option:checked {
+      background-color: #2d3548 !important;
+      color: #f0d58c !important;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-family: inherit;
+    }
+    input::placeholder, textarea::placeholder { color: #9aa7b4; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, .25) !important;
+      border-color: var(--gold) !important;
+    }
+    .btn {
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s ease;
+      border: none;
+      font-size: .95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary {
+      background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+      color: #121212;
+      border: 1px solid #f1e1a8;
+    }
+    .btn-primary:hover:not(:disabled) { filter: brightness(1.05); transform: translateY(-1px); }
+    .btn-secondary {
+      border: 1px solid rgba(255, 255, 255, .2);
+      color: var(--text-1);
+      background: rgba(255, 255, 255, .04);
+    }
+    .btn-secondary:hover:not(:disabled) { background: rgba(255, 255, 255, .08); }
+    .btn-danger {
+      background: var(--ruby);
+      color: white;
+      border: 1px solid #dc2626;
+    }
+    .btn-danger:hover:not(:disabled) { background: #dc2626; }
+    .btn-icon {
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, .1);
+      transition: .3s;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, .2);
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+      border-color: var(--gold);
+    }
+    input:checked + .slider:before {
+      transform: translateX(30px);
+      background-color: #121212;
+    }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+    .radio-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.75rem;
+      background: rgba(255, 255, 255, .04);
+      border: 2px solid rgba(255, 255, 255, .1);
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .radio-option:hover {
+      background: rgba(255, 255, 255, .08);
+      border-color: rgba(255, 255, 255, .2);
+    }
+    .radio-option input[type="radio"] { width: auto; }
+    .radio-option input[type="radio"]:checked + span { color: var(--gold); }
+    .radio-option:has(input:checked) {
+      background: rgba(212, 175, 55, .15);
+      border-color: var(--gold);
+    }
+    .hidden { display: none !important; }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+      z-index: 10000;
+      animation: slideIn .3s ease;
+      max-width: 400px;
+    }
+    .toast.error { border-color: var(--ruby); background: rgba(239, 68, 68, .2); }
+    .toast.success { border-color: var(--emerald); background: rgba(16, 185, 129, .2); }
+    @keyframes slideIn {
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(11, 18, 32, .9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(4px);
+    }
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, .1);
+      border-top: 4px solid var(--gold);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(11, 18, 32, .95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 1rem;
+      backdrop-filter: blur(8px);
+      animation: fadeIn .3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal {
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 1rem;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .6);
+      animation: slideUp .3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--stroke);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .modal-body {
+      padding: 1.5rem;
+    }
+    .modal-actions {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--stroke);
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+    
+    /* Settings Panel Styles */
+    .settings-icon {
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: transform .2s ease;
+    }
+    .settings-icon:hover {
+      transform: rotate(45deg);
+    }
+    
+    /* OCR Preview Styles */
+    .preview-grid {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .preview-field {
+      background: rgba(255, 255, 255, .03);
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
+    .preview-field label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      margin-bottom: 0.25rem;
+    }
+    .preview-field .value {
+      color: var(--text-1);
+      font-weight: 500;
+    }
+    .preview-field input, .preview-field select, .preview-field textarea {
+      margin-top: 0.5rem;
+    }
+    .confidence-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: rgba(16, 185, 129, .2);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, .3);
+    }
+    .raw-text-box {
+      background: rgba(0, 0, 0, .3);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    
+    /* Paste Text Area Styles */
+    .paste-section {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, .03);
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
+    .paste-section.hidden {
+      display: none;
+    }
+    .paste-section textarea {
+      min-height: 150px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+    
+    /* Dropzone Enhanced */
+    .dropzone-enhanced {
+      border: 2px dashed rgba(255, 255, 255, .3);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .3s ease;
+      background: rgba(255, 255, 255, .02);
+    }
+    .dropzone-enhanced:hover {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, .05);
+    }
+    .dropzone-enhanced.drag-over {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, .1);
+      transform: scale(1.02);
+    }
+    
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      body {
+        padding: 0 !important;
+      }
+      
+      body > div {
+        padding: 1rem !important;
+      }
+      
+      h1.lux-title {
+        font-size: 1.75rem !important;
+      }
+      
+      .glass {
+        padding: 1rem !important;
+      }
+      
+      /* Stack mode toggle elements */
+      .glass > div {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+      }
+      
+      /* Make buttons full width on mobile */
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      /* Header icon buttons - compact and side by side */
+      .header-icons {
+        margin-top: 0.5rem;
+      }
+      
+      .header-icons .btn-icon {
+        width: 48px !important;
+        height: 48px !important;
+        padding: 0.5rem !important;
+        min-width: unset !important;
+      }
+      
+      .header-icons .btn-icon span {
+        font-size: 1.5rem !important;
+      }
+      
+      /* Form inputs */
+      input, select, textarea {
+        font-size: 16px !important; /* Prevents zoom on iOS */
+      }
+      
+      /* Bulk table horizontal scroll */
+      .bulk-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .bulk-table-container table {
+        min-width: 800px;
+      }
+      
+      /* Transaction items stack */
+      .transaction-item {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+      }
+      
+      /* Modal adjustments */
+      .modal {
+        max-width: 95% !important;
+        margin: 1rem !important;
+      }
+      
+      /* Quick Guide on mobile */
+      #quickGuideModal > div {
+        margin: 0.5rem auto !important;
+      }
+      
+      #quickGuideModal .glass {
+        padding: 1rem !important;
+      }
+    }
+    
+    @media (min-width: 769px) and (max-width: 1023px) {
+      /* Tablet styles */
+      body > div {
+        padding: 1.5rem !important;
+      }
+      
+      h1.lux-title {
+        font-size: 2rem !important;
+      }
+      
+      /* Header icons slightly larger on tablet */
+      .header-icons .btn-icon {
+        width: 52px;
+        height: 52px;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      /* Desktop: Show sidebar next to content */
+      #mainGrid {
+        grid-template-columns: 2fr 1fr !important;
+      }
+      
+      /* Header icons on desktop */
+      .header-icons .btn-icon {
+        width: 44px;
+        height: 44px;
+      }
+      
+      /* In bulk mode with sidebar hidden, use full width */
+      #mainGrid.bulk-mode-active {
+        grid-template-columns: 1fr !important;
+      }
+      
+      /* When sidebar is shown in bulk mode, adjust grid */
+      #mainGrid.bulk-mode-with-sidebar {
+        grid-template-columns: 2fr 1fr !important;
+      }
+    }
+    
+    /* Transaction Sidebar visibility control */
+    #transactionSidebar.sidebar-hidden {
+      display: none;
+    }
+    
+    @media (max-width: 1023px) {
+      /* On mobile/tablet, always stack vertically */
+      #mainGrid {
+        grid-template-columns: 1fr !important;
+      }
+      
+      /* Transaction sidebar below content on mobile */
+      #transactionSidebar {
+        order: 2;
+      }
+      
+      #singleEntryMode, #bulkEntryMode {
+        order: 1;
+      }
+    }
+    
+    /* Smooth transitions */
+    #transactionSidebar {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    #transactionSidebar.sidebar-hidden {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    
+    /* Touch-friendly buttons on mobile */
+    @media (hover: none) and (pointer: coarse) {
+      .btn {
+        min-height: 44px; /* Apple's recommended touch target */
+        padding: 0.875rem 1.5rem;
+      }
+      
+      .btn-icon {
+        min-width: 44px;
+        min-height: 44px;
+      }
+      
+      /* Keep header icons compact */
+      .header-icons .btn-icon {
+        min-width: 48px;
+        min-height: 48px;
+        width: 48px;
+        height: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h1 class="lux-title" style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">Cascade Ledger</h1>
+      <p class="lux-sub" style="font-size: 1rem; margin-bottom: 1rem;">Property: <strong id="propertyName">Loading...</strong></p>
+      <div class="header-icons" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+        <button id="helpIcon" class="btn btn-icon btn-secondary" title="Quick Guide">
+          <span style="font-size: 1.25rem;">❓</span>
+        </button>
+        <button id="settingsIcon" class="btn btn-icon btn-secondary" title="Settings">
+          <span class="settings-icon" style="font-size: 1.25rem;">⚙️</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mode Toggle -->
+    <div class="glass" style="padding: 1.5rem; border-radius: 1rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span style="font-size: 1.5rem;" id="modeIcon">📝</span>
+        <span style="font-weight: 600; font-size: 1.1rem;" id="modeText">Single Entry Mode</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="modeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Main Grid -->
+    <div id="mainGrid" style="display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2rem;">
+      <!-- Single Entry Mode -->
+      <div id="singleEntryMode">
+        <div class="glass" style="padding: 2rem; border-radius: 1rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--gold);">
+            <span>💸</span> Add Expense
+          </h2>
+
+          <form id="singleEntryForm">
+            <div class="form-group">
+              <label>Date *</label>
+              <input type="date" id="singleDate" name="date" required>
+            </div>
+
+            <div class="form-group">
+              <label>Expense Type *</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="expenseType" value="Variable Expense" required>
+                  <span>Variable Expense</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="expenseType" value="Recurring Expense" required>
+                  <span>Recurring Expense</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="singleCategory" name="category" required>
+                <option value="" disabled selected>— Choose a category —</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Description *</label>
+              <input type="text" name="description" placeholder="e.g., Monthly electricity bill" required>
+            </div>
+
+            <div class="form-group">
+              <label id="supplierLabel">Supplier</label>
+              <input type="text" name="supplier" id="supplierInput" placeholder="e.g., Meralco, SM Store">
+            </div>
+
+            <div id="singleVariableFields" class="hidden">
+              <div class="form-group">
+                <label>Unit *</label>
+                <select id="singleUnit" name="unit">
+                  <option value="pcs">Pieces</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Price Per Unit *</label>
+                <input type="number" id="singlePricePerUnit" name="pricePerUnit" step="0.01" min="0" placeholder="0.00">
+              </div>
+
+              <div class="form-group">
+                <label>Total No. of Units *</label>
+                <input type="number" id="singleQuantity" name="totalNoOfUnit" step="1" min="1" placeholder="1">
+              </div>
+
+              <div class="form-group">
+                <label>Total Amount</label>
+                <input type="number" id="singleTotal" step="0.01" min="0" placeholder="0.00" readonly style="background: rgba(255, 255, 255, .03) !important;">
+              </div>
+            </div>
+
+            <div id="singleRecurringFields" class="hidden">
+              <div class="form-group">
+                <label>Amount *</label>
+                <input type="number" id="singleRecurringAmount" name="recurringAmount" step="0.01" min="0" placeholder="0.00">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Notes</label>
+              <textarea name="notes" rows="3" placeholder="Additional notes (optional)"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+              <button type="submit" class="btn btn-primary" style="flex: 1;">
+                <span>➕</span>
+                <span>Add to List</span>
+              </button>
+              <button type="button" id="clearSingleForm" class="btn btn-secondary">
+                <span>🗑</span>
+                <span>Clear</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Smart OCR & CSV Import Section -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+          <!-- Smart OCR Processing Card -->
+          <div class="glass" style="padding: 2rem; border-radius: 1rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--gold); margin-bottom: 0.5rem;">
+              <span>🤖</span> Smart OCR Processing
+            </h2>
+            <p style="font-size: 0.85rem; color: var(--text-2); margin-bottom: 1.5rem;">
+              Extract transaction data from receipt images or pasted text using AI-powered OCR
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+              <button id="toggleOcrBtn" class="btn btn-secondary" style="width: 100%;">
+                <span>📸</span>
+                <span>Upload File</span>
+              </button>
+              <button id="togglePasteBtn" class="btn btn-secondary" style="width: 100%;">
+                <span>📋</span>
+                <span>Paste Text</span>
+              </button>
+            </div>
+
+            <!-- Paste Text Section -->
+            <div id="pasteSection" class="paste-section hidden">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Paste Receipt Text:</label>
+              <textarea id="pasteTextArea" placeholder="Paste your receipt text here (Ctrl+V or Cmd+V)..."></textarea>
+              <button id="processPasteBtn" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">
+                <span>🔄</span>
+                <span>Process Text</span>
+              </button>
+            </div>
+
+            <!-- File Upload Section -->
+            <div id="ocrSection" class="hidden">
+              <div id="dropzone" class="dropzone-enhanced">
+                <input type="file" id="ocrFiles" accept="image/*,application/pdf" multiple style="display: none;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">Drop files here or click to upload</div>
+                <div style="font-size: 0.9rem; color: var(--text-2);">Supports: Images (PNG, JPG) & PDF files</div>
+              </div>
+              <div id="ocrProgress" style="margin-top: 1rem; display: none;">
+                <div style="text-align: center; padding: 1rem;">
+                  <div class="spinner" style="margin: 0 auto 1rem;"></div>
+                  <div style="color: var(--text-2);">Processing receipt...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CSV Import Card -->
+          <div class="glass" style="padding: 2rem; border-radius: 1rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--gold); margin-bottom: 0.5rem;">
+              <span>📥</span> CSV Import
+            </h2>
+            <p style="font-size: 0.85rem; color: var(--text-2); margin-bottom: 1.5rem;">
+              Import multiple transactions from a CSV file for bulk data entry
+            </p>
+            
+            <button id="toggleCsvBtn" class="btn btn-secondary" style="width: 100%;">
+              <span>📂</span>
+              <span>Choose CSV File</span>
+            </button>
+            
+            <div id="csvSection" class="hidden" style="margin-top: 1.5rem;">
+              <input type="file" id="csvFile" accept=".csv" style="display: none;">
+              <button id="importCsvBtn" class="btn btn-primary" style="width: 100%;">
+                <span>📊</span>
+                <span>Import CSV</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Receipt Upload Card -->
+        <div class="glass" style="padding: 2rem; border-radius: 1rem; margin-top: 2rem;">
+          <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--gold); margin-bottom: 0.5rem;">
+            <span>📎</span> Attach Receipt Copies
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--text-2); margin-bottom: 1.5rem;">
+            Upload receipt photos, PDFs, or transaction emails to Google Drive for record-keeping
+          </p>
+          
+          <div id="receiptUploadArea">
+            <input type="file" id="receiptFiles" accept="image/*,application/pdf,.jpg,.jpeg,.png" multiple style="display: none;">
+            <button id="uploadReceiptBtn" class="btn btn-secondary" style="width: 100%;">
+              <span>📤</span>
+              <span>Upload Receipt Copies</span>
+            </button>
+            <div id="receiptUploadStatus" style="margin-top: 1rem; display: none;">
+              <div style="text-align: center; padding: 1rem;">
+                <div class="spinner" style="margin: 0 auto 1rem;"></div>
+                <div style="color: var(--text-2);">Uploading to Google Drive...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bulk Entry Mode -->
+      <div id="bulkEntryMode" class="hidden">
+        <div class="glass" style="padding: 2rem; border-radius: 1rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--gold);">
+            <span>📊</span> Bulk Entry
+          </h2>
+          <div class="bulk-table-container" style="overflow-x: auto; margin-bottom: 1rem; -webkit-overflow-scrolling: touch;">
+            <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+              <thead>
+                <tr style="background: rgba(255, 255, 255, .05);">
+                  <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--stroke);">Date</th>
+                  <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--stroke);">Type</th>
+                  <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--stroke);">Category</th>
+                  <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--stroke);">Description</th>
+                  <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--stroke);">Amount</th>
+                  <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--stroke);">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="bulkTableBody">
+                <!-- Rows will be added here -->
+              </tbody>
+            </table>
+          </div>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button id="addBulkRow" class="btn btn-secondary" style="flex: 1; min-width: 150px;">
+              <span>➕</span>
+              <span>Add Row</span>
+            </button>
+            <button id="addBulkToList" class="btn btn-primary" style="flex: 2; min-width: 150px;">
+              <span>✅</span>
+              <span>Add to List</span>
+            </button>
+            <button id="clearBulkTable" class="btn btn-danger" style="min-width: 150px;">
+              <span>🗑</span>
+              <span>Clear Table</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction Sidebar -->
+      <div id="transactionSidebar">
+        <div class="glass" style="padding: 2rem; border-radius: 1rem; position: sticky; top: 2rem;">
+          <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--gold);">
+            <span>📋</span> Transaction List
+          </h2>
+          
+          <div style="background: rgba(16, 185, 129, .15); border: 1px solid rgba(16, 185, 129, .3); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span class="lux-sub" style="font-size: 0.85rem;">Items:</span>
+              <span style="font-weight: 700; font-size: 1rem;" id="transactionCount">0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="lux-sub" style="font-size: 0.85rem;">Total:</span>
+              <span style="font-weight: 800; font-size: 1.4rem; color: var(--emerald);" id="transactionTotal">₱0.00</span>
+            </div>
+          </div>
+
+          <div id="transactionItems" style="max-height: 400px; overflow-y: auto; margin-bottom: 1rem;">
+            <p style="text-align: center; color: var(--text-2); padding: 2rem 0; font-size: 0.9rem;">No transactions yet</p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <button id="submitTransactions" class="btn btn-primary" style="width: 100%;" disabled>
+              <span>💾</span>
+              <span>Submit to Ledger</span>
+            </button>
+            <button id="clearTransactions" class="btn btn-danger" style="width: 100%;">
+              <span>🗑</span>
+              <span>Clear List</span>
+            </button>
+            <button id="reloadSettingsBtn" class="btn btn-secondary" style="width: 100%;">
+              <span>🔄</span>
+              <span>Reload Settings</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Guide Modal -->
+  <div id="quickGuideModal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11, 18, 32, .95); z-index: 10000; padding: 1rem; overflow-y: auto; backdrop-filter: blur(8px);">
+    <div style="max-width: 900px; margin: 2rem auto;">
+      <div class="glass" style="padding: 2rem; border-radius: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 2px solid var(--stroke); padding-bottom: 1rem;">
+          <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--gold);">
+            <span>📖</span> Quick Guide - How to Use Cascade Ledger
+          </h2>
+          <button id="closeGuideBtn" class="btn btn-icon btn-secondary" title="Close">
+            <span>✖️</span>
+          </button>
+        </div>
+
+        <div style="display: grid; gap: 1.5rem;">
+          
+          <!-- Step 1 -->
+          <div class="glass" style="padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid var(--gold);">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--gold-soft); margin-bottom: 1rem;">
+              <span style="background: var(--gold); color: #121212; padding: 0.25rem 0.75rem; border-radius: 0.5rem; margin-right: 0.5rem;">1</span>
+              Choose Your Entry Mode
+            </h3>
+            <p style="color: var(--text-2); line-height: 1.6; margin-bottom: 0.75rem;">
+              Toggle between <strong style="color: var(--text-1);">Single Entry Mode</strong> (for one expense at a time) or <strong style="color: var(--text-1);">Bulk Entry Mode</strong> (for multiple expenses at once).
+            </p>
+            <p style="color: var(--emerald); font-size: 0.9rem;">
+              💡 <strong>Tip:</strong> Use Single Entry for quick adds. Use Bulk Entry when processing multiple receipts.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="glass" style="padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid var(--indigo);">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #a5b4fc; margin-bottom: 1rem;">
+              <span style="background: var(--indigo); color: #fff; padding: 0.25rem 0.75rem; border-radius: 0.5rem; margin-right: 0.5rem;">2</span>
+              Single Entry Mode - Manual Entry
+            </h3>
+            <ul style="color: var(--text-2); line-height: 1.8; margin-left: 1.5rem;">
+              <li>Select <strong style="color: var(--text-1);">Expense Type</strong>: Recurring (monthly bills) or Variable (one-time purchases)</li>
+              <li>Choose a <strong style="color: var(--text-1);">Category</strong> from the dropdown (categories change based on expense type)</li>
+              <li>Fill in <strong style="color: var(--text-1);">Date, Description, and Amount</strong></li>
+              <li>For Variable expenses: Add <strong style="color: var(--text-1);">Unit, Price, Quantity</strong> (amount auto-calculates)</li>
+              <li>Click <strong style="color: var(--gold-soft);">"Preview"</strong> to check, then <strong style="color: var(--gold-soft);">"Add to List"</strong></li>
+            </ul>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="glass" style="padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid var(--emerald);">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #6ee7b7; margin-bottom: 1rem;">
+              <span style="background: var(--emerald); color: #fff; padding: 0.25rem 0.75rem; border-radius: 0.5rem; margin-right: 0.5rem;">3</span>
+              Smart OCR - Scan Receipts Automatically
+            </h3>
+            <p style="color: var(--text-2); line-height: 1.6; margin-bottom: 0.75rem;">
+              Click <strong style="color: var(--text-1);">"📷 OCR Receipt"</strong> to activate receipt scanning:
+            </p>
+            <ul style="color: var(--text-2); line-height: 1.8; margin-left: 1.5rem; margin-bottom: 0.75rem;">
+              <li><strong style="color: var(--text-1);">Drag & drop</strong> images or PDFs into the dropzone</li>
+              <li>Or click to <strong style="color: var(--text-1);">browse and select</strong> receipt files</li>
+              <li>The system automatically extracts: <strong style="color: var(--gold-soft);">Amount, Date, Supplier, Description</strong></li>
+              <li><strong style="color: var(--emerald);">Smart Auto-Categorization</strong> suggests the right category based on keywords</li>
+              <li>Review the preview and click <strong style="color: var(--gold-soft);">"Add to List"</strong></li>
+            </ul>
+            <p style="color: var(--emerald); font-size: 0.9rem;">
+              💡 <strong>Pro Tip:</strong> OCR works best with clear, well-lit receipt photos. Supports JPG, PNG, and PDF formats!
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="glass" style="padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid #a78bfa;">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #c4b5fd; margin-bottom: 1rem;">
+              <span style="background: #a78bfa; color: #fff; padding: 0.25rem 0.75rem; border-radius: 0.5rem; margin-right: 0.5rem;">4</span>
+              Paste Text - Quick Receipt Entry
+            </h3>
+            <p style="color: var(--text-2); line-height: 1.6; margin-bottom: 0.75rem;">
+              Click <strong style="color: var(--text-1);">"📋 Paste Text"</strong> to paste receipt text:
+            </p>
+            <ul style="color: var(--text-2); line-height: 1.8; margin-left: 1.5rem;">
+              <li>Copy text from digital receipts or screenshots</li>
+              <li>Paste into the text area</li>
+              <li>Click <strong style="color: var(--gold-soft);">"Process Text"</strong></li>
+              <li>System extracts amount, date, and supplier automatically</li>
+            </ul>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="glass" style="padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid #fbbf24;">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #fcd34d; margin-bottom: 1rem;">
+              <span style="background: #fbbf24; color: #121212; padding: 0.25rem 0.75rem; border-radius: 0.5rem; margin-right: 0.5rem;">5</span>
+              Bulk Entry Mode - Add Multiple Expenses
+            </h3>
+            <p style="color: var(--text-2); line-height: 1.6; margin-bottom: 0.75rem;">
+              Switch to Bulk Entry Mode for processing multiple expenses:
+            </p>
+            <ul style="color: var(--text-2); line-height: 1.8; margin-left: 1.5rem; margin-bottom: 0.75rem;">
+              <li>5 empty rows appear automatically when you open bulk mode</li>
+              <li>Click <strong style="color: var(--gold-soft);">"➕ Add Row"</strong> to add more rows</li>
+              <li>Fill in each row: Date, Type, Category, Description, Amount</li>
+              <li>Categories auto-update when you select expense type</li>
+              <li>Click <strong style="color: var(--ruby);">"🗑 Delete"</strong> to remove unwanted rows</li>
+              <li>Click <strong style="color: var(--gold-soft);">"✅ Add to List"</strong> to move all valid entries to transaction list</li>
+            </ul>
+            <p style="color: var(--emerald); font-size: 0.9rem;">
+              💡 <strong>Note:</strong> Invalid rows (missing fields) will be highlighted in red and stay in the table for correction.
+            </p>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="glass" style="padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid var(--ruby);">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #fca5a5; margin-bottom: 1rem;">
+              <span style="background: var(--ruby); color: #fff; padding: 0.25rem 0.75rem; border-radius: 0.5rem; margin-right: 0.5rem;">6</span>
+              Transaction List - Review & Submit
+            </h3>
+            <p style="color: var(--text-2); line-height: 1.6; margin-bottom: 0.75rem;">
+              All your entries appear in the <strong style="color: var(--text-1);">Transaction List</strong> on the right:
+            </p>
+            <ul style="color: var(--text-2); line-height: 1.8; margin-left: 1.5rem; margin-bottom: 0.75rem;">
+              <li>Review each transaction before submitting</li>
+              <li>Click <strong style="color: var(--ruby);">🗑 Delete</strong> to remove unwanted items</li>
+              <li>See total count and amount at the top</li>
+              <li>Click <strong style="color: var(--gold-soft);">"🚀 Submit to Ledger"</strong> to save all transactions to Google Sheet</li>
+            </ul>
+            <p style="color: var(--emerald); font-size: 0.9rem;">
+              💡 <strong>Auto-Save:</strong> Your transaction list is saved locally. It persists even if you refresh the page!
+            </p>
+          </div>
+
+          <!-- Step 7 -->
+          <div class="glass" style="padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid var(--gold);">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--gold-soft); margin-bottom: 1rem;">
+              <span style="background: var(--gold); color: #121212; padding: 0.25rem 0.75rem; border-radius: 0.5rem; margin-right: 0.5rem;">7</span>
+              Settings - Customize Your Ledger
+            </h3>
+            <p style="color: var(--text-2); line-height: 1.6; margin-bottom: 0.75rem;">
+              Click the <strong style="color: var(--text-1);">⚙️ Settings</strong> button to:
+            </p>
+            <ul style="color: var(--text-2); line-height: 1.8; margin-left: 1.5rem;">
+              <li>Enter admin password to unlock settings</li>
+              <li>Configure Vision API key (for OCR)</li>
+              <li>Configure Claude API key (for smart categorization)</li>
+              <li>Click <strong style="color: var(--emerald);">"Test API Keys"</strong> to verify they work</li>
+              <li>Categories and property name are managed in the Google Sheet "Settings" tab</li>
+            </ul>
+          </div>
+
+          <!-- Quick Tips -->
+          <div class="glass" style="padding: 1.5rem; border-radius: 0.75rem; background: rgba(16, 185, 129, .1); border: 2px solid rgba(16, 185, 129, .3);">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--emerald); margin-bottom: 1rem;">
+              <span>⚡</span> Quick Tips
+            </h3>
+            <ul style="color: var(--text-2); line-height: 1.8; margin-left: 1.5rem;">
+              <li><strong style="color: var(--text-1);">Expense Types:</strong> Recurring = monthly bills (internet, utilities). Variable = one-time purchases (supplies, repairs)</li>
+              <li><strong style="color: var(--text-1);">Auto-Calculation:</strong> For Variable expenses, enter Price Per Unit × Quantity and amount calculates automatically</li>
+              <li><strong style="color: var(--text-1);">Smart Categories:</strong> OCR suggests categories based on keywords (e.g., "Meralco" → Utilities – Electricity)</li>
+              <li><strong style="color: var(--text-1);">Multiple Formats:</strong> Use any entry method that works best for you - they all go to the same transaction list!</li>
+              <li><strong style="color: var(--text-1);">Keyboard Shortcut:</strong> Press Tab to move between fields quickly</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div style="margin-top: 2rem; text-align: center;">
+          <button id="closeGuideBtn2" class="btn btn-primary" style="padding: 1rem 3rem;">
+            <span>✅</span>
+            <span>Got It!</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    'use strict';
+    
+    // Configuration
+    const CONFIG = {
+      FALLBACK_PROPERTY: 'Cascade Hideaway_Bria',
+      STORAGE_KEY: 'cascadeLedgerTransactions',
+      SELECTION_KEY: 'cascadeLedgerSelection',
+      DEFAULT_CATEGORIES: {
+        recurring: [
+          'Utilities – Internet',
+          'Utilities – Electricity', 
+          'Utilities – Water',
+          'Utilities – Pag-IBIG Mortgage',
+          'Utilities – Laundry',
+          'Services – HOA Fee',
+          'Services – Cleaning Fee',
+          'Services – Commission Fee',
+          'Services – Management Fee',
+          'Services – Repairs',
+          'Subscriptions – Netflix',
+          'Subscriptions – Tapo CCTV',
+          'Subscriptions – TTLock',
+          'Subscriptions – ChatGPT Go',
+          'Subscriptions – PriceLabs',
+          'Subscriptions – Other'
+        ],
+        variable: [
+          'Services',
+          'Consumables',
+          'Repairs',
+          'Incentives / Salary',
+          'Refunds',
+          'Supplies – Coffee',
+          'Supplies – Tea',
+          'Supplies – Bottled Water',
+          'Supplies – Dishwashing Soap',
+          'Supplies – Hand Soap',
+          'Supplies – Shampoo',
+          'Supplies – Body Wash',
+          'Supplies – Detergent',
+          'Supplies – Bleach',
+          'Supplies – Paper Towels',
+          'Supplies – Tissue',
+          'Supplies – Toiletries',
+          'Supplies – Kitchen Items',
+          'Supplies – Cleaning Supplies',
+          'Materials – Linens',
+          'Materials – Bed Sheets',
+          'Materials – Pillows',
+          'Materials – Duvet',
+          'Materials – Duvet Covers',
+          'Materials – Towels',
+          'Materials – Bath Mats',
+          'Materials – Curtains',
+          'Materials – Paint',
+          'Materials – Furniture',
+          'Materials – Appliances',
+          'Materials – Decorations',
+          'Materials – Other Equipment',
+          'Maintenance – Plumbing',
+          'Maintenance – Electrical',
+          'Maintenance – HVAC',
+          'Maintenance – Pest Control',
+          'Maintenance – Gardening',
+          'Maintenance – General'
+        ]
+      },
+      DEFAULT_UNITS: [
+        'pcs', 'packs', 'bottles', 'boxes', 'bags', 'rolls', 'sets', 'pairs',
+        'ml', 'liters', 'kg', 'grams', 'meters', 'services', 'units', 
+        'hours', 'days', 'months'
+      ]
+    };
+    
+    // State
+    let SETTINGS = {
+      propertyName: CONFIG.FALLBACK_PROPERTY,
+      categories: {
+        recurring: CONFIG.DEFAULT_CATEGORIES.recurring.slice(),
+        variable: CONFIG.DEFAULT_CATEGORIES.variable.slice()
+      },
+      units: CONFIG.DEFAULT_UNITS.slice(),
+      headers: [],
+      receiptFolderId: ''
+    };
+    let transactionList = [];
+    let transactionIdCounter = 1;
+    let isSubmitting = false;
+    let bulkRowCounter = 1;
+    let isBulkMode = false;
+    let bulkModeInitialized = false;
+
+    // DOM Cache
+    const DOM = {
+      propertyName: document.getElementById('propertyName'),
+      modeToggle: document.getElementById('modeToggle'),
+      modeIcon: document.getElementById('modeIcon'),
+      modeText: document.getElementById('modeText'),
+      mainGrid: document.getElementById('mainGrid'),
+      singleEntryMode: document.getElementById('singleEntryMode'),
+      bulkEntryMode: document.getElementById('bulkEntryMode'),
+      singleForm: document.getElementById('singleEntryForm'),
+      bulkTableBody: document.getElementById('bulkTableBody'),
+      transactionSidebar: document.getElementById('transactionSidebar'),
+      transactionItems: document.getElementById('transactionItems'),
+      transactionCount: document.getElementById('transactionCount'),
+      transactionTotal: document.getElementById('transactionTotal'),
+      submitTransactions: document.getElementById('submitTransactions'),
+      clearTransactions: document.getElementById('clearTransactions'),
+      reloadSettingsBtn: document.getElementById('reloadSettingsBtn'),
+      addBulkRow: document.getElementById('addBulkRow'),
+      addBulkToList: document.getElementById('addBulkToList'),
+      clearBulkTable: document.getElementById('clearBulkTable'),
+      clearSingleForm: document.getElementById('clearSingleForm'),
+      toggleOcrBtn: document.getElementById('toggleOcrBtn'),
+      toggleCsvBtn: document.getElementById('toggleCsvBtn'),
+      togglePasteBtn: document.getElementById('togglePasteBtn'),
+      ocrSection: document.getElementById('ocrSection'),
+      csvSection: document.getElementById('csvSection'),
+      pasteSection: document.getElementById('pasteSection'),
+      dropzone: document.getElementById('dropzone'),
+      ocrFiles: document.getElementById('ocrFiles'),
+      ocrProgress: document.getElementById('ocrProgress'),
+      pasteTextArea: document.getElementById('pasteTextArea'),
+      processPasteBtn: document.getElementById('processPasteBtn'),
+      importCsvBtn: document.getElementById('importCsvBtn'),
+      csvFile: document.getElementById('csvFile'),
+      settingsIcon: document.getElementById('settingsIcon'),
+      helpIcon: document.getElementById('helpIcon'),
+      quickGuideModal: document.getElementById('quickGuideModal'),
+      closeGuideBtn: document.getElementById('closeGuideBtn'),
+      closeGuideBtn2: document.getElementById('closeGuideBtn2')
+    };
+
+    // Utility Functions
+    const debounce = (fn, delay = 300) => {
+      let timeoutId;
+      return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn.apply(this, args), delay);
+      };
+    };
+
+    const formatCurrency = (num) => {
+      const n = parseFloat(num);
+      return isFinite(n) ? `₱${n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}` : '₱0.00';
+    };
+
+    const parseNumber = (val) => {
+      const n = parseFloat(val);
+      return isFinite(n) ? n : 0;
+    };
+
+    const showToast = (message, isError = false) => {
+      const toast = document.createElement('div');
+      toast.className = `toast ${isError ? 'error' : 'success'}`;
+      toast.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span style="font-size: 1.5rem;">${isError ? '⚠️' : '✅'}</span>
+          <span style="font-weight: 600;">${message}</span>
+        </div>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    };
+
+    const showLoading = (show = true) => {
+      let overlay = document.querySelector('.loading-overlay');
+      if (show) {
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.className = 'loading-overlay';
+          overlay.innerHTML = '<div class="spinner"></div>';
+          document.body.appendChild(overlay);
+        }
+      } else {
+        if (overlay) overlay.remove();
+      }
+    };
+
+    // Settings Panel
+    DOM.settingsIcon.addEventListener('click', () => showSettingsModal());
+
+    // Quick Guide Modal
+    DOM.helpIcon.addEventListener('click', () => {
+      DOM.quickGuideModal.classList.remove('hidden');
+    });
+
+    DOM.closeGuideBtn.addEventListener('click', () => {
+      DOM.quickGuideModal.classList.add('hidden');
+    });
+
+    DOM.closeGuideBtn2.addEventListener('click', () => {
+      DOM.quickGuideModal.classList.add('hidden');
+    });
+
+    // Close guide modal on overlay click
+    DOM.quickGuideModal.addEventListener('click', (e) => {
+      if (e.target === DOM.quickGuideModal) {
+        DOM.quickGuideModal.classList.add('hidden');
+      }
+    });
+
+    function showSettingsModal() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay';
+      modal.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">⚙️ Admin Settings</div>
+          <div class="modal-body">
+            <div id="settingsLoginForm">
+              <div class="form-group">
+                <label>Admin Password *</label>
+                <input type="password" id="adminPasswordInput" placeholder="Enter admin password" style="padding: 0.75rem; border-radius: 0.5rem;">
+              </div>
+              <button id="settingsLoginBtn" class="btn btn-primary" style="width: 100%;">
+                <span>🔓</span>
+                <span>Login</span>
+              </button>
+            </div>
+            <div id="settingsPanel" class="hidden">
+              <div class="form-group">
+                <label>Vision API Key</label>
+                <input type="text" id="visionApiKeyInput" placeholder="Enter Google Vision API key" style="padding: 0.75rem; border-radius: 0.5rem;">
+                <div style="font-size: 0.85rem; color: var(--text-2); margin-top: 0.5rem;">Required for image OCR processing</div>
+              </div>
+              <div class="form-group">
+                <label>Claude API Key (Optional)</label>
+                <input type="text" id="claudeApiKeyInput" placeholder="Enter Claude API key" style="padding: 0.75rem; border-radius: 0.5rem;">
+                <div style="font-size: 0.85rem; color: var(--text-2); margin-top: 0.5rem;">For future AI enhancements</div>
+              </div>
+              <div class="form-group">
+                <label>Change Password</label>
+                <input type="password" id="newPasswordInput" placeholder="New password (leave blank to keep current)" style="padding: 0.75rem; border-radius: 0.5rem;">
+              </div>
+              <button id="saveSettingsBtn" class="btn btn-primary" style="width: 100%;">
+                <span>💾</span>
+                <span>Save Settings</span>
+              </button>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" data-action="cancel">Close</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      const loginBtn = modal.querySelector('#settingsLoginBtn');
+      const passwordInput = modal.querySelector('#adminPasswordInput');
+      const loginForm = modal.querySelector('#settingsLoginForm');
+      const settingsPanel = modal.querySelector('#settingsPanel');
+      const saveBtn = modal.querySelector('#saveSettingsBtn');
+      
+      loginBtn.addEventListener('click', async () => {
+        const password = passwordInput.value;
+        if (!password) {
+          showToast('Please enter password', true);
+          return;
+        }
+        
+        showLoading(true);
+        
+        if (typeof google !== 'undefined' && google.script) {
+          google.script.run
+            .withSuccessHandler(result => {
+              showLoading(false);
+              if (result.success) {
+                loginForm.classList.add('hidden');
+                settingsPanel.classList.remove('hidden');
+                modal.querySelector('#visionApiKeyInput').value = result.visionApiKey || '';
+                modal.querySelector('#claudeApiKeyInput').value = result.claudeApiKey || '';
+                showToast('Logged in successfully');
+              } else {
+                showToast(result.message || 'Invalid password', true);
+              }
+            })
+            .withFailureHandler(err => {
+              showLoading(false);
+              showToast('Error: ' + err, true);
+            })
+            .getAdminSettings(password);
+        } else {
+          showLoading(false);
+          showToast('Google Apps Script not available', true);
+        }
+      });
+      
+      saveBtn.addEventListener('click', async () => {
+        const currentPassword = passwordInput.value;
+        const visionApiKey = modal.querySelector('#visionApiKeyInput').value;
+        const claudeApiKey = modal.querySelector('#claudeApiKeyInput').value;
+        const newPassword = modal.querySelector('#newPasswordInput').value;
+        
+        showLoading(true);
+        
+        if (typeof google !== 'undefined' && google.script) {
+          google.script.run
+            .withSuccessHandler(result => {
+              showLoading(false);
+              if (result.success) {
+                showToast('Settings saved successfully');
+                modal.remove();
+              } else {
+                showToast(result.message || 'Failed to save settings', true);
+              }
+            })
+            .withFailureHandler(err => {
+              showLoading(false);
+              showToast('Error: ' + err, true);
+            })
+            .saveAdminSettings({
+              currentPassword,
+              visionApiKey,
+              claudeApiKey,
+              newPassword
+            });
+        } else {
+          showLoading(false);
+          showToast('Google Apps Script not available', true);
+        }
+      });
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay') || e.target.closest('[data-action="cancel"]')) {
+          modal.remove();
+        }
+      });
+    }
+
+    // Enhanced OCR with Preview
+    async function processOCRData(payload) {
+      return new Promise((resolve, reject) => {
+        if (typeof google !== 'undefined' && google.script) {
+          google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)
+            .processOCR(payload);
+        } else {
+          reject(new Error('Google Apps Script not available'));
+        }
+      });
+    }
+
+    function showOCRPreview(data) {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay';
+      modal.innerHTML = `
+        <div class="modal" style="max-width: 700px;">
+          <div class="modal-header">👁️ Review OCR Result</div>
+          <div class="modal-body">
+            <div class="preview-grid">
+              <div class="preview-field">
+                <label>Date</label>
+                <input type="date" id="preview-date" value="${data.date || ''}" style="padding: 0.5rem; border-radius: 0.5rem;">
+              </div>
+              <div class="preview-field">
+                <label>Expense Type</label>
+                <select id="preview-expenseType" style="padding: 0.5rem; border-radius: 0.5rem;">
+                  <option value="Variable Expense" ${data.expenseType === 'Variable Expense' ? 'selected' : ''}>Variable Expense</option>
+                  <option value="Recurring Expense" ${data.expenseType === 'Recurring Expense' ? 'selected' : ''}>Recurring Expense</option>
+                </select>
+              </div>
+              <div class="preview-field">
+                <label>Category ${data.confidence ? `<span class="confidence-badge">${data.confidence} confidence</span>` : ''}</label>
+                <select id="preview-category" style="padding: 0.5rem; border-radius: 0.5rem;">
+                  <option value="">— Choose category —</option>
+                </select>
+              </div>
+              <div class="preview-field">
+                <label>Description</label>
+                <input type="text" id="preview-description" value="${data.description || ''}" style="padding: 0.5rem; border-radius: 0.5rem;">
+              </div>
+              <div class="preview-field">
+                <label>Supplier</label>
+                <input type="text" id="preview-supplier" value="${data.supplier || ''}" style="padding: 0.5rem; border-radius: 0.5rem;">
+              </div>
+              <div class="preview-field">
+                <label>Amount</label>
+                <input type="number" id="preview-amount" value="${data.amount || ''}" step="0.01" style="padding: 0.5rem; border-radius: 0.5rem;">
+              </div>
+              <div id="preview-variable-fields" class="${data.expenseType === 'Recurring Expense' ? 'hidden' : ''}">
+                <div class="preview-field">
+                  <label>Unit</label>
+                  <select id="preview-unit" style="padding: 0.5rem; border-radius: 0.5rem;">
+                    ${CONFIG.DEFAULT_UNITS.map(u => `<option value="${u}" ${data.unit === u ? 'selected' : ''}>${u.charAt(0).toUpperCase() + u.slice(1)}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="preview-field">
+                  <label>Price Per Unit</label>
+                  <input type="number" id="preview-pricePerUnit" value="${data.pricePerUnit || ''}" step="0.01" style="padding: 0.5rem; border-radius: 0.5rem;">
+                </div>
+                <div class="preview-field">
+                  <label>Quantity</label>
+                  <input type="number" id="preview-quantity" value="${data.totalNoOfUnit || 1}" step="1" style="padding: 0.5rem; border-radius: 0.5rem;">
+                </div>
+              </div>
+              <div class="preview-field">
+                <label>Notes</label>
+                <textarea id="preview-notes" rows="2" style="padding: 0.5rem; border-radius: 0.5rem;"></textarea>
+              </div>
+              ${data.rawText ? `
+                <div class="preview-field">
+                  <label>Raw Extracted Text</label>
+                  <div class="raw-text-box">${data.rawText}</div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" data-action="cancel">Cancel</button>
+            <button class="btn btn-primary" data-action="confirm">
+              <span>➕</span>
+              <span>Add to List</span>
+            </button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      // Populate category dropdown
+      const categorySelect = modal.querySelector('#preview-category');
+      const expenseTypeSelect = modal.querySelector('#preview-expenseType');
+      
+      const updateCategories = () => {
+        const type = expenseTypeSelect.value;
+        const categories = type === 'Recurring Expense' ? SETTINGS.categories.recurring : SETTINGS.categories.variable;
+        categorySelect.innerHTML = '<option value="">— Choose category —</option>' + 
+          categories.map(cat => `<option value="${cat}" ${cat === data.category ? 'selected' : ''}>${cat}</option>`).join('');
+        
+        const varFields = modal.querySelector('#preview-variable-fields');
+        if (varFields) {
+          varFields.classList.toggle('hidden', type === 'Recurring Expense');
+        }
+      };
+      
+      updateCategories();
+      expenseTypeSelect.addEventListener('change', updateCategories);
+      
+      modal.addEventListener('click', (e) => {
+        const action = e.target.closest('[data-action]')?.dataset.action;
+        if (action === 'cancel' || e.target.classList.contains('modal-overlay')) {
+          modal.remove();
+        } else if (action === 'confirm') {
+          const item = {
+            id: transactionIdCounter++,
+            property: SETTINGS.propertyName || CONFIG.FALLBACK_PROPERTY,
+            date: modal.querySelector('#preview-date').value,
+            expenseType: expenseTypeSelect.value,
+            category: categorySelect.value,
+            description: modal.querySelector('#preview-description').value,
+            supplier: modal.querySelector('#preview-supplier').value,
+            amount: modal.querySelector('#preview-amount').value,
+            unit: expenseTypeSelect.value === 'Recurring Expense' ? '' : modal.querySelector('#preview-unit').value,
+            pricePerUnit: expenseTypeSelect.value === 'Recurring Expense' ? '' : modal.querySelector('#preview-pricePerUnit').value,
+            totalNoOfUnit: expenseTypeSelect.value === 'Recurring Expense' ? '' : modal.querySelector('#preview-quantity').value,
+            source: 'OCR',
+            receiptUrl: data.receiptUrl || '',
+            notes: modal.querySelector('#preview-notes').value
+          };
+          
+          transactionList.push(item);
+          renderTransactions();
+          modal.remove();
+          showToast('Transaction added to list');
+        }
+      });
+    }
+
+    // Paste Text OCR
+    DOM.togglePasteBtn.addEventListener('click', () => {
+      const isHidden = DOM.pasteSection.classList.toggle('hidden');
+      if (!isHidden) {
+        DOM.ocrSection.classList.add('hidden');
+      }
+    });
+
+    DOM.processPasteBtn.addEventListener('click', async () => {
+      const text = DOM.pasteTextArea.value.trim();
+      if (!text) {
+        showToast('Please paste some text first', true);
+        return;
+      }
+      
+      showLoading(true);
+      
+      try {
+        const result = await processOCRData({ text });
+        showLoading(false);
+        
+        if (result.success) {
+          showOCRPreview(result);
+          DOM.pasteTextArea.value = '';
+        } else {
+          showToast(result.message || 'Processing failed', true);
+        }
+      } catch (err) {
+        showLoading(false);
+        showToast('Error: ' + err.message, true);
+      }
+    });
+
+    // File Upload OCR
+    DOM.toggleOcrBtn.addEventListener('click', () => {
+      const isHidden = DOM.ocrSection.classList.toggle('hidden');
+      if (!isHidden) {
+        DOM.pasteSection.classList.add('hidden');
+      }
+    });
+
+    const handleFiles = async (files) => {
+      if (!files || files.length === 0) return;
+      
+      for (const file of files) {
+        showLoading(true);
+        
+        try {
+          const base64 = await fileToBase64(file);
+          const result = await processOCRData({
+            imageBase64: base64,
+            fileName: file.name,
+            mimeType: file.type
+          });
+          
+          showLoading(false);
+          
+          if (result.success) {
+            showOCRPreview(result);
+          } else {
+            showToast(result.message || 'Processing failed', true);
+          }
+        } catch (err) {
+          showLoading(false);
+          showToast('Error: ' + err.message, true);
+        }
+      }
+    };
+
+    const fileToBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    };
+
+    ['dragenter', 'dragover'].forEach(ev => {
+      DOM.dropzone.addEventListener(ev, e => {
+        e.preventDefault();
+        DOM.dropzone.classList.add('drag-over');
+      });
+    });
+    
+    ['dragleave', 'drop'].forEach(ev => {
+      DOM.dropzone.addEventListener(ev, e => {
+        e.preventDefault();
+        DOM.dropzone.classList.remove('drag-over');
+      });
+    });
+    
+    DOM.dropzone.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+    DOM.ocrFiles.addEventListener('change', e => handleFiles(e.target.files));
+    DOM.dropzone.addEventListener('click', () => DOM.ocrFiles.click());
+
+    // Rest of the JavaScript continues in next message...
+
+    // CSV Import (existing functionality)
+    const parseCSV = (text) => {
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      if (!lines.length) return [];
+      
+      return lines.map(line => {
+        const out = [];
+        let cur = '', q = false;
+        for (let i = 0; i < line.length; i++) {
+          const c = line[i];
+          if (c === '"') {
+            if (q && line[i + 1] === '"') { cur += '"'; i++; }
+            else { q = !q; }
+            continue;
+          }
+          if (c === ',' && !q) { out.push(cur); cur = ''; continue; }
+          cur += c;
+        }
+        out.push(cur);
+        return out;
+      });
+    };
+
+    const mapCsvToItems = (rows) => {
+      if (!rows.length) return [];
+      
+      const header = rows[0].map(h => String(h || '').trim().toLowerCase());
+      const idx = (names) => {
+        for (const n of names) {
+          const i = header.indexOf(n);
+          if (i > -1) return i;
+        }
+        return -1;
+      };
+      
+      const col = {
+        date: idx(['date', 'transaction date']),
+        type: idx(['expense type', 'type']),
+        category: idx(['category']),
+        description: idx(['description', 'product', 'item']),
+        supplier: idx(['supplier', 'vendor']),
+        unit: idx(['unit', 'unit type']),
+        ppu: idx(['price per unit', 'ppu', 'price']),
+        units: idx(['total no. of unit', 'units', 'qty']),
+        amount: idx(['amount', 'total']),
+        notes: idx(['notes', 'remarks'])
+      };
+      
+      const items = [];
+      for (let r = 1; r < rows.length; r++) {
+        const row = rows[r];
+        if (!row.length) continue;
+        
+        const type = (col.type > -1 ? row[col.type] : 'Variable Expense') || 'Variable Expense';
+        const isRecurring = type.toLowerCase().includes('recurring');
+        
+        const item = {
+          id: transactionIdCounter++,
+          property: SETTINGS.propertyName || CONFIG.FALLBACK_PROPERTY,
+          date: col.date > -1 ? row[col.date] : '',
+          expenseType: isRecurring ? 'Recurring Expense' : 'Variable Expense',
+          category: col.category > -1 ? row[col.category] : '',
+          description: col.description > -1 ? row[col.description] : '',
+          supplier: col.supplier > -1 ? row[col.supplier] : '',
+          unit: isRecurring ? '' : (col.unit > -1 ? row[col.unit] : ''),
+          pricePerUnit: isRecurring ? '' : (col.ppu > -1 ? row[col.ppu] : ''),
+          totalNoOfUnit: isRecurring ? '' : (col.units > -1 ? row[col.units] : ''),
+          amount: col.amount > -1 ? row[col.amount] : '',
+          source: 'CSV',
+          receiptUrl: '',
+          notes: col.notes > -1 ? row[col.notes] : ''
+        };
+        
+        if (item.category || item.description || item.amount) {
+          items.push(item);
+        }
+      }
+      
+      return items;
+    };
+
+    DOM.importCsvBtn.addEventListener('click', () => DOM.csvFile.click());
+    DOM.csvFile.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const rows = parseCSV(String(ev.target.result || ''));
+        const items = mapCsvToItems(rows);
+        if (items.length) {
+          transactionList.push(...items);
+          renderTransactions();
+          showToast(`Imported ${items.length} row(s)`);
+        } else {
+          showToast('No valid rows found', true);
+        }
+        DOM.csvFile.value = '';
+      };
+      reader.readAsText(file);
+    });
+
+    DOM.toggleCsvBtn.addEventListener('click', () => {
+      const isExpanded = DOM.csvSection.classList.toggle('hidden');
+      if (!isExpanded) {
+        DOM.importCsvBtn.click();
+      }
+    });
+
+    // Receipt Upload Functionality
+    const uploadReceiptBtn = document.getElementById('uploadReceiptBtn');
+    const receiptFiles = document.getElementById('receiptFiles');
+    const receiptUploadStatus = document.getElementById('receiptUploadStatus');
+
+    uploadReceiptBtn.addEventListener('click', () => receiptFiles.click());
+
+    receiptFiles.addEventListener('change', async (e) => {
+      const files = e.target.files;
+      if (!files || files.length === 0) return;
+
+      receiptUploadStatus.style.display = 'block';
+      
+      for (const file of files) {
+        try {
+          const base64Data = await fileToBase64(file);
+          
+          if (typeof google !== 'undefined' && google.script) {
+            const result = await new Promise((resolve, reject) => {
+              google.script.run
+                .withSuccessHandler(resolve)
+                .withFailureHandler(reject)
+                .uploadReceiptToFolder({
+                  fileName: file.name,
+                  mimeType: file.type,
+                  base64Data: base64Data
+                });
+            });
+
+            if (result.success) {
+              showToast(`Uploaded: ${result.fileName}`);
+            } else {
+              showToast(result.message || 'Upload failed', true);
+            }
+          } else {
+            showToast('Google Apps Script not available', true);
+          }
+        } catch (err) {
+          showToast(`Error: ${err.message}`, true);
+        }
+      }
+      
+      receiptUploadStatus.style.display = 'none';
+      receiptFiles.value = '';
+    });
+
+    // ============================================================
+    // BULK ENTRY FUNCTIONS
+    // ============================================================
+
+    function addBulkRow() {
+      const rowId = `bulk-row-${bulkRowCounter++}`;
+      const today = new Date().toISOString().split('T')[0];
+      
+      const row = document.createElement('tr');
+      row.id = rowId;
+      row.style.background = 'rgba(255, 255, 255, .02)';
+      
+      row.innerHTML = `
+        <td style="padding: 0.5rem;">
+          <input type="date" class="bulk-date" value="${today}" 
+            style="padding: 0.5rem; border-radius: 0.5rem; width: 100%; min-width: 140px; font-size: 16px;" required>
+        </td>
+        <td style="padding: 0.5rem;">
+          <select class="bulk-type" 
+            style="padding: 0.5rem; border-radius: 0.5rem; width: 100%; min-width: 140px; font-size: 16px;" required>
+            <option value="">— Choose Type —</option>
+            <option value="Recurring Expense">Recurring</option>
+            <option value="Variable Expense">Variable</option>
+          </select>
+        </td>
+        <td style="padding: 0.5rem;">
+          <select class="bulk-category" 
+            style="padding: 0.5rem; border-radius: 0.5rem; width: 100%; min-width: 160px; font-size: 16px;" required>
+            <option value="">— Choose Type First —</option>
+          </select>
+        </td>
+        <td style="padding: 0.5rem;">
+          <input type="text" class="bulk-description" placeholder="Description" 
+            style="padding: 0.5rem; border-radius: 0.5rem; width: 100%; min-width: 180px; font-size: 16px;" required>
+        </td>
+        <td style="padding: 0.5rem;">
+          <input type="number" class="bulk-amount" placeholder="0.00" step="0.01" min="0" 
+            style="padding: 0.5rem; border-radius: 0.5rem; width: 100%; min-width: 120px; font-size: 16px;" required>
+        </td>
+        <td style="padding: 0.5rem; text-align: center;">
+          <button type="button" class="btn btn-danger" 
+            onclick="deleteBulkRow('${rowId}')" 
+            style="padding: 0.5rem 1rem; font-size: 0.85rem; white-space: nowrap;">
+            🗑 Delete
+          </button>
+        </td>
+      `;
+      
+      DOM.bulkTableBody.appendChild(row);
+      
+      // Add event listener for type change to update categories
+      const typeSelect = row.querySelector('.bulk-type');
+      const categorySelect = row.querySelector('.bulk-category');
+      
+      typeSelect.addEventListener('change', (e) => {
+        updateCategoryDropdown(categorySelect, e.target.value);
+      });
+    }
+
+    function deleteBulkRow(rowId) {
+      const row = document.getElementById(rowId);
+      if (row) {
+        row.remove();
+      }
+    }
+
+    function addBulkToList() {
+      const rows = DOM.bulkTableBody.querySelectorAll('tr');
+      
+      if (rows.length === 0) {
+        showNotification('No rows to add. Click "Add Row" first.', 'warning');
+        return;
+      }
+      
+      let validCount = 0;
+      let invalidCount = 0;
+      
+      rows.forEach(row => {
+        const date = row.querySelector('.bulk-date')?.value;
+        const type = row.querySelector('.bulk-type')?.value;
+        const category = row.querySelector('.bulk-category')?.value;
+        const description = row.querySelector('.bulk-description')?.value;
+        const amount = row.querySelector('.bulk-amount')?.value;
+        
+        // Validate required fields
+        if (!date || !type || !category || !description || !amount) {
+          invalidCount++;
+          row.style.background = 'rgba(239, 68, 68, .1)'; // Highlight invalid row
+          return;
+        }
+        
+        // Create transaction object
+        const transaction = {
+          date: date,
+          expenseType: type,
+          category: category,
+          description: description,
+          amount: parseFloat(amount),
+          supplier: '',
+          unit: '',
+          pricePerUnit: '',
+          totalNoOfUnit: '',
+          source: 'Bulk Entry',
+          receiptUrl: '',
+          notes: ''
+        };
+        
+        transactionList.push(transaction);
+        validCount++;
+      });
+      
+      if (validCount > 0) {
+        renderTransactions();
+        saveTransactions();
+        
+        // Show transaction sidebar in bulk mode after adding items
+        if (isBulkMode) {
+          DOM.transactionSidebar.classList.remove('sidebar-hidden');
+          DOM.mainGrid.classList.remove('bulk-mode-active');
+          DOM.mainGrid.classList.add('bulk-mode-with-sidebar');
+          
+          if (window.innerWidth >= 1024) {
+            DOM.mainGrid.style.gridTemplateColumns = '2fr 1fr';
+          }
+          
+          // Smooth scroll to transaction list on mobile
+          if (window.innerWidth < 1024) {
+            setTimeout(() => {
+              DOM.transactionSidebar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+          }
+        }
+        
+        // Clear only valid rows
+        if (invalidCount === 0) {
+          clearBulkTable();
+          showNotification(`Added ${validCount} transaction(s) to list`, 'success');
+        } else {
+          // Remove only valid rows
+          rows.forEach(row => {
+            if (row.style.background !== 'rgba(239, 68, 68, .1)') {
+              row.remove();
+            }
+          });
+          showNotification(`Added ${validCount} transaction(s). ${invalidCount} row(s) have errors.`, 'warning');
+        }
+      } else {
+        showNotification('Please fill in all required fields for each row', 'error');
+      }
+    }
+
+    function clearBulkTable() {
+      DOM.bulkTableBody.innerHTML = '';
+      bulkRowCounter = 1;
+    }
+
+    // ============================================================
+    // END BULK ENTRY FUNCTIONS
+    // ============================================================
+
+    // Mode Toggle
+    DOM.modeToggle.addEventListener('change', (e) => {
+      isBulkMode = e.target.checked;
+      DOM.singleEntryMode.classList.toggle('hidden', isBulkMode);
+      DOM.bulkEntryMode.classList.toggle('hidden', !isBulkMode);
+      DOM.modeIcon.textContent = isBulkMode ? '📊' : '📝';
+      DOM.modeText.textContent = isBulkMode ? 'Bulk Entry Mode' : 'Single Entry Mode';
+      
+      // Handle transaction sidebar visibility
+      if (isBulkMode) {
+        // Hide sidebar initially in bulk mode for more space
+        DOM.transactionSidebar.classList.add('sidebar-hidden');
+        DOM.mainGrid.classList.add('bulk-mode-active');
+        DOM.mainGrid.classList.remove('bulk-mode-with-sidebar');
+        
+        // Add 5 rows when bulk mode is first opened
+        if (!bulkModeInitialized) {
+          for (let i = 0; i < 5; i++) {
+            addBulkRow();
+          }
+          bulkModeInitialized = true;
+        }
+      } else {
+        // Show sidebar in single entry mode
+        DOM.transactionSidebar.classList.remove('sidebar-hidden');
+        DOM.mainGrid.classList.remove('bulk-mode-active', 'bulk-mode-with-sidebar');
+      }
+      
+      // Adjust grid for desktop
+      if (window.innerWidth >= 1024) {
+        if (isBulkMode && DOM.transactionSidebar.classList.contains('sidebar-hidden')) {
+          DOM.mainGrid.style.gridTemplateColumns = '1fr';
+        } else {
+          DOM.mainGrid.style.gridTemplateColumns = '2fr 1fr';
+        }
+      }
+    });
+
+    // Responsive layout handler
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        // Desktop: Show sidebar with proper grid
+        if (isBulkMode && DOM.transactionSidebar.classList.contains('sidebar-hidden')) {
+          DOM.mainGrid.style.gridTemplateColumns = '1fr';
+        } else {
+          DOM.mainGrid.style.gridTemplateColumns = '2fr 1fr';
+        }
+      } else {
+        // Mobile/Tablet: Always stack vertically
+        DOM.mainGrid.style.gridTemplateColumns = '1fr';
+      }
+    };
+
+    // Listen for window resize
+    window.addEventListener('resize', debounce(handleResize, 150));
+
+    // Transaction Management
+    const renderTransactions = () => {
+      if (!transactionList.length) {
+        DOM.transactionItems.innerHTML = '<p style="text-align: center; color: var(--text-2); padding: 2rem 0; font-size: 0.9rem;">No transactions yet</p>';
+        DOM.submitTransactions.disabled = true;
+      } else {
+        DOM.transactionItems.innerHTML = transactionList.map((item, idx) => `
+          <div class="transaction-item" style="background: rgba(255, 255, 255, .03); padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem; border: 1px solid rgba(255, 255, 255, .1);">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+              <div style="flex: 1;">
+                <div style="font-weight: 600; margin-bottom: 0.25rem;">${item.description || 'Unnamed'}</div>
+                <div style="font-size: 0.85rem; color: var(--text-2);">${item.category || '—'}</div>
+              </div>
+              <button onclick="removeTransaction(${idx})" class="btn" style="padding: 0.25rem 0.5rem; background: transparent; border: 1px solid var(--ruby); color: var(--ruby); font-size: 0.85rem;">✕</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; color: var(--text-2);">${item.date || '—'}</span>
+              <span style="font-weight: 700; color: var(--gold);">${formatCurrency(item.amount)}</span>
+            </div>
+          </div>
+        `).join('');
+        DOM.submitTransactions.disabled = false;
+      }
+      
+      DOM.transactionCount.textContent = transactionList.length;
+      DOM.transactionTotal.textContent = formatCurrency(transactionList.reduce((s, i) => s + parseNumber(i.amount), 0));
+      saveTransactions();
+    };
+
+    window.removeTransaction = (idx) => {
+      transactionList.splice(idx, 1);
+      renderTransactions();
+    };
+
+    DOM.clearTransactions.addEventListener('click', () => {
+      if (transactionList.length && confirm('Clear all transactions?')) {
+        transactionList = [];
+        renderTransactions();
+      }
+    });
+
+    DOM.submitTransactions.addEventListener('click', async () => {
+      if (isSubmitting || !transactionList.length) return;
+      
+      const confirmed = await showConfirmDialog(transactionList);
+      if (!confirmed) return;
+      
+      isSubmitting = true;
+      showLoading(true);
+      
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run
+          .withSuccessHandler(res => {
+            showLoading(false);
+            isSubmitting = false;
+            if (res.success) {
+              showToast(res.message);
+              transactionList = [];
+              renderTransactions();
+            } else {
+              showToast(res.message, true);
+            }
+          })
+          .withFailureHandler(err => {
+            showLoading(false);
+            isSubmitting = false;
+            showToast('Network error: ' + err, true);
+          })
+          .processBatchExpenses(transactionList);
+      } else {
+        showLoading(false);
+        isSubmitting = false;
+        showToast('Google Apps Script not available', true);
+      }
+    });
+
+    const showConfirmDialog = (items) => {
+      return new Promise((resolve) => {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+          <div class="modal">
+            <div class="modal-header">Confirm Submission</div>
+            <div class="modal-body">
+              <p style="margin-bottom: 1rem;">Submit ${items.length} transaction(s) to the ledger?</p>
+              <p style="font-size: 0.9rem; color: var(--text-2);">
+                Total Amount: <strong style="color: var(--emerald);">${formatCurrency(items.reduce((s, i) => s + parseNumber(i.amount), 0))}</strong>
+              </p>
+            </div>
+            <div class="modal-actions">
+              <button class="btn btn-secondary" data-action="cancel">Cancel</button>
+              <button class="btn btn-primary" data-action="confirm">Submit</button>
+            </div>
+          </div>
+        `;
+        
+        modal.addEventListener('click', (e) => {
+          const action = e.target.closest('[data-action]')?.dataset.action;
+          if (action) {
+            modal.remove();
+            resolve(action === 'confirm');
+          }
+        });
+        
+        document.body.appendChild(modal);
+      });
+    };
+
+    const saveLastSelection = (type) => {
+      try {
+        localStorage.setItem(CONFIG.SELECTION_KEY, JSON.stringify({ type }));
+      } catch (e) {
+        console.error('Failed to save selection:', e);
+      }
+    };
+
+    const loadLastSelection = () => {
+      try {
+        const saved = localStorage.getItem(CONFIG.SELECTION_KEY);
+        return saved ? JSON.parse(saved) : {};
+      } catch (e) {
+        return {};
+      }
+    };
+
+    const saveTransactions = () => {
+      try {
+        localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(transactionList));
+      } catch (e) {
+        console.error('Failed to save transactions:', e);
+      }
+    };
+
+    const restoreTransactions = () => {
+      try {
+        const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
+        if (saved) {
+          transactionList = JSON.parse(saved);
+          transactionIdCounter = Math.max(...transactionList.map(t => t.id), 0) + 1;
+        }
+      } catch (e) {
+        console.error('Failed to restore transactions:', e);
+      }
+    };
+
+    // Category Management
+    const updateCategoryDropdown = (selectElement, type) => {
+      if (!selectElement) return;
+      
+      selectElement.innerHTML = '<option value="" disabled selected>— Choose a category —</option>';
+      
+      const categories = type === 'Recurring Expense' 
+        ? (SETTINGS.categories.recurring.length ? SETTINGS.categories.recurring : CONFIG.DEFAULT_CATEGORIES.recurring)
+        : type === 'Variable Expense'
+        ? (SETTINGS.categories.variable.length ? SETTINGS.categories.variable : CONFIG.DEFAULT_CATEGORIES.variable)
+        : [];
+      
+      categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        selectElement.appendChild(opt);
+      });
+    };
+
+    const populateUnitDropdown = (selectElement) => {
+      if (!selectElement) return;
+      
+      selectElement.innerHTML = '';
+      const units = SETTINGS.units.length ? SETTINGS.units : CONFIG.DEFAULT_UNITS;
+      
+      units.forEach((unit, idx) => {
+        const opt = document.createElement('option');
+        opt.value = unit;
+        opt.textContent = unit.charAt(0).toUpperCase() + unit.slice(1);
+        if (idx === 0) opt.selected = true;
+        selectElement.appendChild(opt);
+      });
+    };
+
+    // Single Entry Mode
+    const toggleSingleFields = (type) => {
+      const isRecurring = type === 'Recurring Expense';
+      const varFields = document.getElementById('singleVariableFields');
+      const recFields = document.getElementById('singleRecurringFields');
+      
+      if (varFields && recFields) {
+        varFields.classList.toggle('hidden', isRecurring);
+        recFields.classList.toggle('hidden', !isRecurring);
+      }
+      
+      // Change label from Supplier to Biller for recurring expenses
+      const supplierLabel = document.getElementById('supplierLabel');
+      const supplierInput = document.getElementById('supplierInput');
+      if (supplierLabel && supplierInput) {
+        supplierLabel.textContent = isRecurring ? 'Biller' : 'Supplier';
+        supplierInput.placeholder = isRecurring ? 'e.g., Meralco, PLDT' : 'e.g., Meralco, SM Store';
+      }
+      
+      const unitEl = document.getElementById('singleUnit');
+      const ppuEl = document.getElementById('singlePricePerUnit');
+      const qtyEl = document.getElementById('singleQuantity');
+      const recAmtEl = document.getElementById('singleRecurringAmount');
+      
+      if (unitEl) unitEl.required = !isRecurring;
+      if (ppuEl) ppuEl.required = !isRecurring;
+      if (qtyEl) qtyEl.required = !isRecurring;
+      if (recAmtEl) recAmtEl.required = isRecurring;
+      
+      updateCategoryDropdown(document.getElementById('singleCategory'), type);
+      saveLastSelection(type);
+    };
+
+    const updateSingleTotal = debounce(() => {
+      const ppuEl = document.getElementById('singlePricePerUnit');
+      const qtyEl = document.getElementById('singleQuantity');
+      const totalEl = document.getElementById('singleTotal');
+      
+      if (ppuEl && qtyEl && totalEl) {
+        const ppu = parseNumber(ppuEl.value);
+        const qty = parseNumber(qtyEl.value);
+        const total = ppu * qty;
+        totalEl.value = total.toFixed(2);
+      }
+    }, 150);
+
+    document.querySelectorAll('input[name="expenseType"]').forEach(radio => {
+      radio.addEventListener('change', (e) => toggleSingleFields(e.target.value));
+    });
+
+    const ppuEl = document.getElementById('singlePricePerUnit');
+    const qtyEl = document.getElementById('singleQuantity');
+    if (ppuEl) ppuEl.addEventListener('input', updateSingleTotal);
+    if (qtyEl) qtyEl.addEventListener('input', updateSingleTotal);
+
+    DOM.singleForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (isSubmitting) return;
+      
+      const formData = new FormData(e.target);
+      const type = formData.get('expenseType');
+      const isRecurring = type === 'Recurring Expense';
+      
+      const item = {
+        id: transactionIdCounter++,
+        property: SETTINGS.propertyName || CONFIG.FALLBACK_PROPERTY,
+        date: formData.get('date'),
+        expenseType: type,
+        category: formData.get('category'),
+        description: formData.get('description'),
+        supplier: formData.get('supplier') || '',
+        unit: isRecurring ? '' : formData.get('unit'),
+        pricePerUnit: isRecurring ? '' : formData.get('pricePerUnit'),
+        totalNoOfUnit: isRecurring ? '' : formData.get('totalNoOfUnit'),
+        amount: isRecurring ? formData.get('recurringAmount') : document.getElementById('singleTotal').value,
+        source: 'Manual',
+        receiptUrl: '',
+        notes: formData.get('notes') || ''
+      };
+      
+      transactionList.push(item);
+      renderTransactions();
+      
+      const selectedType = type;
+      e.target.reset();
+      document.getElementById('singleDate').valueAsDate = new Date();
+      document.getElementById('singleTotal').value = '0.00';
+      
+      const radio = Array.from(document.querySelectorAll('input[name="expenseType"]')).find(r => r.value === selectedType);
+      if (radio) {
+        radio.checked = true;
+        toggleSingleFields(selectedType);
+      }
+      
+      showToast('Added to list');
+    });
+
+    DOM.clearSingleForm.addEventListener('click', () => {
+      DOM.singleForm.reset();
+      document.getElementById('singleDate').valueAsDate = new Date();
+      document.getElementById('singleTotal').value = '0.00';
+    });
+
+    // Settings
+    DOM.reloadSettingsBtn.addEventListener('click', () => {
+      if (typeof google !== 'undefined' && google.script) {
+        showLoading(true);
+        google.script.run
+          .withSuccessHandler(s => {
+            showLoading(false);
+            if (s) {
+              SETTINGS = s;
+              if (!SETTINGS.categories.recurring.length) {
+                SETTINGS.categories.recurring = CONFIG.DEFAULT_CATEGORIES.recurring.slice();
+              }
+              if (!SETTINGS.categories.variable.length) {
+                SETTINGS.categories.variable = CONFIG.DEFAULT_CATEGORIES.variable.slice();
+              }
+              if (!SETTINGS.units.length) {
+                SETTINGS.units = CONFIG.DEFAULT_UNITS.slice();
+              }
+            }
+            DOM.propertyName.textContent = SETTINGS.propertyName || CONFIG.FALLBACK_PROPERTY;
+            
+            populateUnitDropdown(document.getElementById('singleUnit'));
+            
+            const selectedType = document.querySelector('input[name="expenseType"]:checked')?.value;
+            if (selectedType) {
+              updateCategoryDropdown(document.getElementById('singleCategory'), selectedType);
+            }
+            
+            showToast('Settings reloaded');
+          })
+          .withFailureHandler(() => {
+            showLoading(false);
+            showToast('Failed to reload', true);
+          })
+          .getSettings();
+      }
+    });
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof google !== 'undefined' && google.script) {
+        showLoading(true);
+        google.script.run
+          .withSuccessHandler(s => {
+            showLoading(false);
+            if (s) {
+              SETTINGS = s;
+              if (!SETTINGS.categories.recurring.length) {
+                SETTINGS.categories.recurring = CONFIG.DEFAULT_CATEGORIES.recurring.slice();
+              }
+              if (!SETTINGS.categories.variable.length) {
+                SETTINGS.categories.variable = CONFIG.DEFAULT_CATEGORIES.variable.slice();
+              }
+              if (!SETTINGS.units.length) {
+                SETTINGS.units = CONFIG.DEFAULT_UNITS.slice();
+              }
+            }
+            DOM.propertyName.textContent = SETTINGS.propertyName || CONFIG.FALLBACK_PROPERTY;
+            
+            populateUnitDropdown(document.getElementById('singleUnit'));
+            
+            const last = loadLastSelection();
+            if (last.type) {
+              const radio = Array.from(document.querySelectorAll('input[name="expenseType"]')).find(r => r.value === last.type);
+              if (radio) {
+                radio.checked = true;
+                toggleSingleFields(last.type);
+              }
+            } else {
+              const defaultRadio = document.querySelector('input[value="Variable Expense"]');
+              if (defaultRadio) {
+                defaultRadio.checked = true;
+                toggleSingleFields('Variable Expense');
+              }
+            }
+          })
+          .withFailureHandler(() => {
+            showLoading(false);
+            DOM.propertyName.textContent = CONFIG.FALLBACK_PROPERTY;
+            populateUnitDropdown(document.getElementById('singleUnit'));
+            
+            const defaultRadio = document.querySelector('input[value="Variable Expense"]');
+            if (defaultRadio) {
+              defaultRadio.checked = true;
+              toggleSingleFields('Variable Expense');
+            }
+          })
+          .getSettings();
+      } else {
+        DOM.propertyName.textContent = CONFIG.FALLBACK_PROPERTY;
+        populateUnitDropdown(document.getElementById('singleUnit'));
+        
+        const defaultRadio = document.querySelector('input[value="Variable Expense"]');
+        if (defaultRadio) {
+          defaultRadio.checked = true;
+          toggleSingleFields('Variable Expense');
+        }
+      }
+      
+      // Bulk Entry Event Listeners
+      DOM.addBulkRow.addEventListener('click', addBulkRow);
+      DOM.addBulkToList.addEventListener('click', addBulkToList);
+      DOM.clearBulkTable.addEventListener('click', clearBulkTable);
+      
+      document.getElementById('singleDate').valueAsDate = new Date();
+      restoreTransactions();
+      renderTransactions();
+      
+      if (window.innerWidth >= 1024) {
+        DOM.mainGrid.style.gridTemplateColumns = '2fr 1fr';
+      }
+    });
+  </script>
+</body>
+</html>

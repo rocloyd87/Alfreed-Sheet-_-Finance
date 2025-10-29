@@ -1,0 +1,88 @@
+
+## 5. Apps Script Integration Notes
+
+### 🔧 Data Flow Overview
+1. User uploads raw `Register.csv` and `Plan.csv` exports.
+2. Script reads both files, normalizes headers.
+3. Applies mapping rules in this order:
+   - Exact Category match
+   - Payee pattern match
+   - Memo pattern match (optional)
+   - Fallback: Transfer → `Transfers`; Else → `To Triage`
+4. Outputs three cleaned sheets:
+   - `Transactions`
+   - `Categories`
+   - `Budget`
+
+### ⚙️ Sample Functions (Apps Script)
+
+#### Normalize Headers
+```javascript
+function normalizeHeaders(headers) {
+  return headers.map(h => h.replace(/[\u201C\u201D"\uFFFD]/g, '').trim());
+}
+```
+
+#### Parse and Clean Amounts
+```javascript
+function parseCurrency(value) {
+  return parseFloat(String(value).replace(/[^\d.-]/g, '')) || 0;
+}
+```
+
+#### Apply Mapping Rules
+```javascript
+function mapCategory(payee, category, rules) {
+  for (let rule of rules) {
+    let catMatch = (rule.if.category_old_contains || []).every(k => category.toLowerCase().includes(k.toLowerCase()));
+    let payeeMatch = (rule.if.payee_contains || []).every(k => payee.toLowerCase().includes(k.toLowerCase()));
+    if ((rule.if.category_old_contains && !catMatch) || (rule.if.payee_contains && !payeeMatch)) continue;
+    return rule.then;
+  }
+  if (/transfer/i.test(category) || /transfer/i.test(payee)) return { group: "Transfers", category: "Internal Transfers", tags: ["transfer"] };
+  return { group: "Uncategorized / Review", category: "To Triage", tags: ["review"] };
+}
+```
+
+#### Generate ImportId
+```javascript
+function generateImportId(row, index) {
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, Object.values(row).join('-')).map(b => (b + 256).toString(16).slice(-2)).join('');
+}
+```
+
+---
+
+## 6. Documentation
+
+### 📁 Schema Reference
+#### Transactions Sheet
+- `Date, Account, Payee, Category Group, Category, Tags, Memo, Amount, In/Out, Source, ImportId`
+
+#### Categories Sheet
+- `Category Group, Category, Status(Active/Archived), Notes`
+
+#### Budget Sheet (Optional)
+- `Month (YYYY-MM), Category Group, Category, Planned, Notes`
+
+### 🧠 Category Governance
+- **Add/Retire**: Use "Status" in `Categories.csv`
+- **Naming**: Use simple, capitalized names (e.g., "Dining Out")
+- **Tags vs. Categories**: Use tags for context (Shopee, Subscription) instead of creating new categories
+
+### 🔁 Mapping Maintenance
+- Add new rules in the JSON `mapping_rules` object.
+- Order matters: specific before general.
+- **Test** changes by re-processing a small dataset first.
+
+### ⚠️ Edge Case Handling
+| Scenario                | Action                                |
+|-------------------------|----------------------------------------|
+| Split transactions      | Marked `To Triage`; future logic TBD  |
+| Refunds (positive inflow w/ past outflow) | Mark as Inflow, tag `refund` |
+| Transfers (internal)    | `Transfers → Internal Transfers`       |
+| Cash Withdrawals        | `Transfers` + `cash` tag               |
+| Credit Card Payments    | Detected by `Transfer:` payee format  |
+| Investment Buys/Sells   | `Savings & Investments` group          |
+
+---
